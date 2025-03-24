@@ -1,0 +1,36 @@
+name: Deploy production vfe exe
+
+on:
+  push:
+    branches: 
+      - main
+      
+jobs:
+  docker-compose:
+    runs-on: self-hosted
+    environment: docker
+    steps:
+    # Clone src
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Xóa container nếu đang chạy
+    - name: Stop & Remove container
+      run: |
+        docker stop my-nginx-container || true
+        docker rm my-nginx-container || true
+
+    # Xóa image cũ nếu tồn tại
+    - name: Delete old image
+      run: |
+        docker rmi exefei || true
+
+    # Build image mới
+    - name: Build image
+      run: |
+        docker build -t exefei .
+
+    # Chạy container mới
+    - name: Run container
+      run: |
+        docker run -d -p 9712:80 --name my-nginx-container exefei
