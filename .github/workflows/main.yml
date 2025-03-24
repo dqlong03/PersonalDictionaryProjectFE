@@ -33,4 +33,4 @@ jobs:
     # Chạy container mới
     - name: Run container
       run: |
-        docker run -d -p 9712:80 --name my-nginx-container exefei
+        docker run -d -p 8081:80 --name fe_personal_dictionary prj
