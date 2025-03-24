@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Profile</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link rel="icon" href="assets/img/tudien.png" type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/auth.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="Home.html" class="logo">
+              <img
+                src="assets/img/logohome.png"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="30"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item">
+                <a href="Home.html">
+                  <i class="fas fa-home"></i>
+                  <p>Home</p>
+                </a>
+              </li>
+              <li class="nav-item ">  
+                <a href="PublicDictionary.html">  
+                    <i class="fas fa-search"></i>  
+                    <p>Public Dictionary</p>  
+                </a>  
+            </li>
+              <li class="nav-item">
+                <a href="MyDictionary.html">
+                    <i class="fas fa-bookmark"></i>
+                  <p>My Dictionary</p>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a href="Profile.html">
+                  <i class="fas fa-user"></i>
+                  <p>Profile</p>
+                </a>
+              </li>
+              <li id="userManagementMenu" class="d-none nav-item">
+                <a href="userManagement.html">
+                    <i class="fa fa-users"></i> User Management
+                </a>
+            </li>
+            <li id="wordManagementMenu" class="d-none nav-item">
+              <a href="WordManagement.html">
+                  <i class="fas fa-clipboard-list"></i>
+                <p>Word Management</p>
+              </a>
+            </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <!-- Navbar Header -->
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom " data-background-color="dark">
+            <div class="container-fluid">
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <img src="assets/img/avatar.png" alt="..." class="avatar-img rounded-circle" />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold" id="userNameDisplay">User</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <a class="dropdown-item" href="Profile.html">My Profile</a>
+                        <a class="dropdown-item" href="#" id="logoutBtn">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner mt-4">
+            <div class="row">
+              <div class="col-md-8 mx-auto">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title">User Profile</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center">
+                      <img src="assets/img/avatar.png" class="rounded-circle" width="120" />
+                    </div>
+                    <table class="table mt-3">
+                        <tbody>
+                            <input type="hidden" id="userId" />
+                          <tr>
+                            <th style="width: 30%;">Username:</th>
+                            <td><input type="text" id="userName" class="form-control" readonly /></td>
+                          </tr>
+                          <tr>
+                            <th style="width: 30%;">Full Name:</th>
+                            <td><input type="text" id="fullName" class="form-control" /></td>
+                          </tr>
+                          
+                          <tr>
+                            <th style="width: 30%;">Email:</th>
+                            <td><input type="email" id="email" class="form-control" /></td>
+                          </tr>
+                          <tr>
+                            <th style="width: 30%;">Phone Number:</th>
+                            <td><input type="text" id="phoneNumber" class="form-control" /></td>
+                          </tr>
+                          <tr>
+                            <th style="width: 30%;">Password:</th>
+                            <td><input type="text" id="password" class="form-control" /></td>
+                          </tr>
+                          <tr>
+                            <th style="width: 30%;">Confirm Password:</th>
+                            <td><input type="text" id="confirmPassword" class="form-control" /></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="text-end mt-3" style="margin-right: 2.5%;">
+                        <button class="btn btn-primary" id="updateProfileBtn" 
+                                style="width: 30%; background-color: #2a2f5b !important; border-color: #2a2f5b !important;">
+                          Update
+                        </button>
+                      </div>
+                      
+                      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer"></footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Access Denied',
+              text: 'Please login first!',
+          }).then(() => {
+              window.location.href = "index.html";
+          });
+      }
+        fetch("http://103.163.24.134:8080/api/UserInformation", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.id) {
+                document.getElementById("userId").value = data.id;
+                document.getElementById("fullName").value = data.fullName;
+                document.getElementById("userName").value = data.userName;
+                document.getElementById("email").value = data.email;
+                document.getElementById("phoneNumber").value = data.phoneNumber || "";
+            } else {
+              throw new Error("Invalid user data");
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      });
+    </script>
+    <script>
+      const token = localStorage.getItem("token");
+       fetch("http://103.163.24.134:8080/api/UserInformation", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.id) {
+          document.getElementById("userNameDisplay").textContent = data.fullName;
+          if (data.roles && data.roles.includes("Admin")) {
+             document.getElementById("userManagementMenu").classList.remove("d-none");
+                document.getElementById("wordManagementMenu").classList.remove("d-none");
+          }
+        } else {
+          throw new Error("Invalid user data");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+        document.getElementById("updateProfileBtn").addEventListener("click", function () {
+            const token = localStorage.getItem("token");
+            if (!token) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Access Denied',
+                text: 'Please login first!',
+            }).then(() => {
+                window.location.href = "index.html";
+            });
+            }
+          const userId = document.getElementById("userId").value;
+          const fullName = document.getElementById("fullName").value;
+          const email = document.getElementById("email").value;
+          const phoneNumber = document.getElementById("phoneNumber").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          if(confirmPassword !== password){
+            Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: 'Password and Confirm Password do not match!',
+            });
+            return;
+          }
+          const updatedUser = {
+            id: userId,
+            fullName: fullName,
+            email: email,
+            phoneNumber: phoneNumber,
+            password: password
+          };
+            fetch("http://103.163.24.134:8080/api/UserInformation/update", {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedUser)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text(); 
+            })
+            .then(text => {
+                try {
+                    return JSON.parse(text); 
+                } catch (error) {
+                    return { message: text }; 
+                }
+            })
+            .then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: data.message || 'User information updated successfully!',
+                });
+            })
+            .catch(error => {
+                console.error("Error updating user info:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Update Failed',
+                    text: error.message || 'Could not update user information.',
+                });
+            });
+
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link
+      rel="icon"
+      href="assets/img/tudien.png"
+      type="image/x-icon"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="styles/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="login_box">
+            <div class="login-header">
+                <span>Register</span>
+            </div>
+
+            <p id="error-msg" style="color: red; text-align: center;"></p>
+
+            <div class="input_box">
+                <input type="text" id="user" class="input-field" required>
+                <label for="user" class="label">Username</label>
+            </div>
+
+            <div class="input_box">
+                <input type="email" id="email" class="input-field" required>
+                <label for="email" class="label">Email</label>
+            </div>
+
+            <div class="input_box">
+                <input type="text" id="fullName" class="input-field" required>
+                <label for="fullName" class="label">Full Name</label>
+            </div>
+
+            <div class="input_box">
+                <input type="password" id="pass" class="input-field" required>
+                <label for="pass" class="label">Password</label>
+            </div>
+
+            <div class="input_box">
+                <input type="password" id="confirmPass" class="input-field" required>
+                <label for="confirmPass" class="label">Confirm Password</label>
+            </div>
+
+            <div class="input_box">
+                <input type="submit" class="input-submit" value="Register">
+            </div>
+
+            <div class="register">
+                <span>Already have an account? <a href="index.html">Login</a></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".input-submit").addEventListener("click", async function (e) {
+                e.preventDefault(); 
+
+                const userName = document.getElementById("user").value;
+                const email = document.getElementById("email").value;
+                const fullName = document.getElementById("fullName").value;
+                const password = document.getElementById("pass").value;
+                const confirmPassword = document.getElementById("confirmPass").value;
+                const errorMsg = document.getElementById("error-msg");
+
+                if (!userName || !email || !fullName || !password || !confirmPassword) {
+                    errorMsg.textContent = "Vui lòng nhập đầy đủ thông tin!";
+                    return;
+                }
+
+                if (password.length < 6) {
+                    errorMsg.textContent = "Mật khẩu phải có ít nhất 6 ký tự!";
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    errorMsg.textContent = "Mật khẩu nhập lại không khớp!";
+                    return;
+                }
+
+                errorMsg.textContent = ""; 
+
+                try {
+                    const response = await fetch("http://103.163.24.134:8080/api/Authentication/register", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ userName, email, password, fullName }),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || "Tài khoản đã tồn tại!");
+                    }
+                    Swal.fire("Success!", "Đăng ký thành công! Vui lòng đăng nhập.", "success");
+                    window.location.href = "index.html";
+                } catch (error) {
+                    errorMsg.textContent = error.message;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

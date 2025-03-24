@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Home</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="assets/img/tudien.png"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/auth.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="Home.html" class="logo">
+              <img
+                src="assets/img/logohome.png"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="30"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item active">
+                <a href="Home.html">
+                  <i class="fas fa-home"></i>
+                  <p>Home</p>
+                </a>
+              </li>
+              <li class="nav-item ">  
+                <a href="PublicDictionary.html">  
+                    <i class="fas fa-search"></i>  
+                    <p>Public Dictionary</p>  
+                </a>  
+            </li>
+              <li class="nav-item">
+                <a href="MyDictionary.html">
+                    <i class="fas fa-bookmark"></i>
+                  <p>My Dictionary</p>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a href="Profile.html">
+                  <i class="fas fa-user"></i>
+                  <p>Profile</p>
+                </a>
+              </li>
+              <li id="userManagementMenu" class="d-none nav-item">
+                <a href="userManagement.html">
+                    <i class="fa fa-users"></i> User Management
+                </a>
+            </li>
+            <li id="wordManagementMenu" class="d-none nav-item">
+              <a href="WordManagement.html">
+                  <i class="fas fa-clipboard-list"></i>
+                <p>Word Management</p>
+              </a>
+            </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"  data-background-color="dark">
+            <div class="container-fluid">
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div class="avatar-sm">
+                      <img
+                        src="assets/img/avatar.png"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold" id="userNameDisplay"> User Name</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <a class="dropdown-item" href="Profile.html">My Profile</a>
+                        <a class="dropdown-item" id="logoutBtn" onclick="logout()">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container" >
+          <div class="page-inner" >
+            <div class="col-md-12" >
+              <div class="card" style="height: 100vh !important;">
+                <div style="width: 80%; margin:10% auto;">
+                  <div class="d-flex align-items-center mt-4">
+                    <select id="sourceLang" class="form-control flex-grow-1">
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">Tiếng Anh</option>
+                        <option value="fr">Tiếng Pháp</option>
+                        <option value="ja">Tiếng Nhật</option>
+                    </select>
+                
+                    <button id="swapLang" class="btn btn-secondary mx-2" style="background-color: #fff !important; border: none !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                        </svg>
+                    </button>
+                
+                    <select id="targetLang" class="form-control flex-grow-1">
+                        <option value="en">Tiếng Anh</option>
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="fr">Tiếng Pháp</option>
+                        <option value="ja">Tiếng Nhật</option>
+                    </select>
+                </div>
+                
+                  <div class="row mt-4" >
+                    <!-- Cột bên trái: Nhập văn bản -->
+                    <div class="col-md-6">
+                      
+                      <textarea style="height: 250px !important;" id="sourceText" class="form-control mt-2" rows="4" placeholder="Nhập văn bản..."></textarea>
+                    </div>
+                    <!-- Cột bên phải: Kết quả dịch -->
+                    <div class="col-md-6">
+                    
+              
+                      <textarea style="height: 250px !important;" id="translatedText" class="form-control mt-2" rows="4" readonly></textarea>
+                    </div>
+                  </div>
+                </div>
+
+          </div>
+        </div>
+      </div>
+    </div>     
+
+        <footer class="footer">
+        </footer>
+      </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <script>
+      const token = localStorage.getItem("token");
+      fetch("http://103.163.24.134:8080/api/UserInformation", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.id) {
+          document.getElementById("userNameDisplay").textContent = data.fullName;
+          if (data.roles && data.roles.includes("Admin")) {
+             document.getElementById("userManagementMenu").classList.remove("d-none");
+                document.getElementById("wordManagementMenu").classList.remove("d-none");
+          }
+        } else {
+          throw new Error("Invalid user data");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+      let timeout = null;
+    
+      function translateText() {
+          let sourceText = document.getElementById("sourceText").value.trim();
+          let sourceLang = document.getElementById("sourceLang").value;
+          let targetLang = document.getElementById("targetLang").value;
+    
+          if (sourceText === "") {
+              document.getElementById("translatedText").value = "";
+              return;
+          }
+    
+          let url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURI(sourceText)}`;
+    
+          fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                  document.getElementById("translatedText").value = data[0].map(item => item[0]).join("");
+              })
+              .catch(error => {
+                  Swal.fire("Lỗi", "Không thể thực hiện dịch thuật. Vui lòng thử lại!", "error");
+              });
+      }
+    
+      document.getElementById("sourceText").addEventListener("input", function () {
+          clearTimeout(timeout);
+          timeout = setTimeout(translateText, 500);
+      });
+    
+      document.getElementById("sourceLang").addEventListener("change", translateText);
+      document.getElementById("targetLang").addEventListener("change", translateText);
+    
+      document.getElementById("swapLang").addEventListener("click", function () {
+          let sourceLang = document.getElementById("sourceLang").value;
+          let targetLang = document.getElementById("targetLang").value;
+    
+          document.getElementById("sourceLang").value = targetLang;
+          document.getElementById("targetLang").value = sourceLang;
+    
+          let sourceText = document.getElementById("sourceText").value;
+          let translatedText = document.getElementById("translatedText").value;
+    
+          document.getElementById("sourceText").value = translatedText;
+          document.getElementById("translatedText").value = sourceText;
+    
+          translateText();
+      });
+    </script>
+    
+    
+  </body>
+</html>

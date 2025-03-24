@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>User Management</title>
+        <meta
+          content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+          name="viewport"
+        />
+        <link
+          rel="icon"
+          href="assets/img/tudien.png"
+          type="image/x-icon"
+        />
+    
+        <!-- Fonts and icons -->
+        <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+        <script>
+          WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+              families: [
+                "Font Awesome 5 Solid",
+                "Font Awesome 5 Regular",
+                "Font Awesome 5 Brands",
+                "simple-line-icons",
+              ],
+              urls: ["assets/css/fonts.min.css"],
+            },
+            active: function () {
+              sessionStorage.fonts = true;
+            },
+          });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="assets/js/auth.js"></script>
+    
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="assets/css/plugins.min.css" />
+        <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+      </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="Home.html" class="logo">
+              <img
+                src="assets/img/logohome.png"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="30"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item">
+                <a href="Home.html">
+                  <i class="fas fa-home"></i>
+                  <p>Home</p>
+                </a>
+              </li>
+              <li class="nav-item ">  
+                <a href="PublicDictionary.html">  
+                    <i class="fas fa-search"></i>  
+                    <p>Public Dictionary</p>  
+                </a>  
+            </li>
+              <li class="nav-item">
+                <a href="MyDictionary.html">
+                    <i class="fas fa-bookmark"></i>
+                  <p>My Dictionary</p>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a href="Profile.html">
+                  <i class="fas fa-user"></i>
+                  <p>Profile</p>
+                </a>
+              </li>
+              <li id="userManagementMenu" class="d-none nav-item active">
+                <a href="userManagement.html">
+                    <i class="fa fa-users"></i> User Management
+                </a>
+            </li>
+            <li id="wordManagementMenu" class="d-none nav-item">
+              <a href="WordManagement.html">
+                  <i class="fas fa-clipboard-list"></i>
+                <p>Word Management</p>
+              </a>
+            </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+
+            <!-- Navbar Header -->
+            <nav
+              class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"  data-background-color="dark">
+              <div class="container-fluid">
+                <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                  <li class="nav-item topbar-user dropdown hidden-caret">
+                    <a
+                      class="dropdown-toggle profile-pic"
+                      data-bs-toggle="dropdown"
+                      href="#"
+                      aria-expanded="false"
+                    >
+                      <div class="avatar-sm">
+                        <img
+                          src="assets/img/avatar.png"
+                          alt="..."
+                          class="avatar-img rounded-circle"
+                        />
+                      </div>
+                      <span class="profile-username">
+                        <span class="op-7">Hi,</span>
+                        <span class="fw-bold" id="userNameDisplay"> User Name</span>
+                      </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                      <div class="dropdown-user-scroll scrollbar-outer">
+                        <li>
+                          <a class="dropdown-item" href="Profile.html">My Profile</a>
+                          <a class="dropdown-item" id="logoutBtn" onclick="logout()">Logout</a>
+                        </li>
+                      </div>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <!-- End Navbar -->
+          </div>
+
+          <div class="container">
+            <div class="page-inner">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="d-flex align-items-center">
+                        <h4 class="card-title">User Management</h4>
+                        <div class="input-group" style="width: 500px; margin-left: 100px;">
+                          <input oninput="searchUsers()"  type="text" id="searchInput" placeholder="Search ..." class="form-control" />
+                        </div>
+                        <select onchange="searchUsers()" id="statusFilter" class="form-select" style="width: 200px; margin-left: 100px;">
+                          <option value="">All</option>
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                      </select>
+                        <button class="btn btn-primary btn-round ms-auto" style="background-color: #343a40 !important; border: none !important;" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                          <svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header border-0">
+                              <h5 class="modal-title">Add New User</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form id="addUserForm">
+                                <div class="form-group">
+                                  <label>User Name</label>
+                                  <input id="userName" type="text" class="form-control" required />
+                                </div>
+                                <div class="form-group">
+                                  <label>Email</label>
+                                  <input id="email" type="email" class="form-control" required />
+                                </div>
+                                <div class="form-group">
+                                  <label>Full Name</label>
+                                  <input id="fullName" type="text" class="form-control" required />
+                                </div>
+                                <div class="form-group">
+                                  <label>Password</label>
+                                  <input id="password" type="password" class="form-control" required />
+                                </div>
+                                <div class="form-group">
+                                  <label>Confirm password</label>
+                                  <input id="confirmPassword" type="password" class="form-control" required />
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer border-0">
+                              <button type="button" class="btn btn-primary" onclick="addUser()">Add</button>
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="table-responsive">
+                        <table id="userTable" class="display table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>User Name</th>
+                              <th>Full Name</th>
+                              <th>Email</th>
+                              <th>Phone Number</th>
+                              <th style=" text-align: center;">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title">Update User</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="updateUserForm">
+                    <input type="hidden" id="updateUserId" />
+                    <div class="form-group">
+                      <label>User Name</label>
+                      <input id="updateUserName" type="text" class="form-control" required readonly/>
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input id="updateEmail" type="email" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                      <label>Full Name</label>
+                      <input id="updateFullName" type="text" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <input id="updatePhoneNumber" type="text" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input id="updatePassword" type="password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                      <label>Confirm Password</label>
+                      <input id="updateConfirmPassword" type="password" class="form-control" />
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-primary" onclick="updateUser()">Update</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <footer class="footer">
+        </footer>
+
+    </div>
+    
+
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <script>
+    const token = localStorage.getItem("token");
+      fetch("http://103.163.24.134:8080/api/UserInformation", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.id) {
+          document.getElementById("userNameDisplay").textContent = data.fullName;
+          if (data.roles && data.roles.includes("Admin")) {
+             document.getElementById("userManagementMenu").classList.remove("d-none");
+            document.getElementById("wordManagementMenu").classList.remove("d-none");
+          }else{
+            Swal.fire({
+              icon: 'warning',
+              title: 'Access Denied',
+            }).then(() => {
+                window.location.href = "Home.html";
+            });
+          }
+        } else {
+          throw new Error("Invalid user data");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+      function searchUsers() {
+          const query = document.getElementById("searchInput").value;
+          const status = document.getElementById("statusFilter").value;
+
+          fetch(`http://103.163.24.134:8080/api/UserInformation/search?query=${encodeURIComponent(query)}&role=${status}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              displayUsers(data);
+          })
+          .catch(error => console.error("Error:", error));
+      }
+
+      async function displayUsers(users) {
+        const tableBody = document.querySelector('#userTable tbody');
+        tableBody.innerHTML = '';
+        users.forEach(user => {
+          tableBody.innerHTML += `
+            <tr>
+              <td id="userName${user.id}">${user.userName}</td>
+              <td id="fullName${user.id}">${user.fullName}</td>
+              <td id="email${user.id}">${user.email}</td>
+              <td id="phoneNumber${user.id}">${user.phoneNumber == null?'':user.phoneNumber}</td>
+              <td style=" text-align: center;">
+                <button class="btn btn-link btn-primary btn-lg" onclick="editUser('${user.id}')">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-link btn-danger" onclick="deleteUser('${user.id}')">
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+      async function fetchUsers() {
+        const response = await fetch('http://103.163.24.134:8080/api/UserInformation/all', {
+          headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+        });
+        const users = await response.json();
+        const tableBody = document.querySelector('#userTable tbody');
+        tableBody.innerHTML = '';
+        users.forEach(user => {
+          tableBody.innerHTML += `
+            <tr>
+              <td id="userName${user.id}">${user.userName}</td>
+              <td id="fullName${user.id}">${user.fullName}</td>
+              <td id="email${user.id}">${user.email}</td>
+              <td id="phoneNumber${user.id}">${user.phoneNumber == null?'':user.phoneNumber}</td>
+              <td style=" text-align: center;">
+                <button class="btn btn-link btn-primary btn-lg" onclick="editUser('${user.id}')">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-link btn-danger" onclick="deleteUser('${user.id}')">
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+    
+      async function addUser() {
+        const userName = document.getElementById('userName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const fullName = document.getElementById('fullName').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('Password confirmation does not match!');
+            return;
+        }
+        const userData = {
+            userName,
+            email,
+            fullName,
+            password
+        };
+        try {
+            const response = await fetch('http://103.163.24.134:8080/api/UserInformation/register', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              document.getElementById('userName').value = '';
+              document.getElementById('email').value = '';
+              document.getElementById('fullName').value = '';
+              document.getElementById('password').value = '';
+              document.getElementById('confirmPassword').value = '';
+                alert('User added successfully!');
+                $('#addUserModal').modal('hide');
+                fetchUsers();
+            } else {
+              Swal.fire("Error!", "Failed to add user!", "error");            }
+        } catch (error) {
+            console.error('Error adding user:', error);
+            Swal.fire("Error!", "Failed to add user!", "error");
+        }
+    }
+    async function updateUser() {
+        const id = document.getElementById('updateUserId').value;
+        const userName = document.getElementById('updateUserName').value.trim();
+        const email = document.getElementById('updateEmail').value.trim();
+        const fullName = document.getElementById('updateFullName').value.trim();
+        const phoneNumber = document.getElementById('updatePhoneNumber').value.trim();
+        const password = document.getElementById('updatePassword').value;
+        const confirmPassword = document.getElementById('updateConfirmPassword').value;
+
+        if (password !== confirmPassword) {
+          Swal.fire("Failure!", "Password confirmation does not match!", "failure");
+            return;
+        }
+        const userData = {
+            id,
+            phoneNumber,
+            email,
+            fullName,
+            password
+        };
+        try {
+            const response = await fetch('http://l103.163.24.134:8080/api/UserInformation/update', {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify(userData)
+            });
+            if (response.ok) {
+                Swal.fire("Success!", "User updated successfully!", "success");
+                $('#updateUserModal').modal('hide');
+                fetchUsers();
+            } else {
+              Swal.fire("Error!", "Failed to update user.!", "error");
+            }
+        } catch (error) {
+            Swal.fire("Error!", "Failed to update user!", "error");         
+          }
+    }
+    async function deleteUser(userId) {
+      console.log(userId);
+      const result = await Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+          });
+          if (result.isConfirmed) {
+        try {
+            const response = await fetch(`http://l103.163.24.134:8080/api/UserInformation`, {
+                method: 'DELETE', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                },body: JSON.stringify(userId)
+            });
+            if (response.ok) {
+                Swal.fire("Success!", "Delete successfully!", "success");
+                fetchUsers();
+            } else {
+              Swal.fire("Error!", "Failed to delete user.!", "error");
+            }
+        } catch (error) {
+            Swal.fire("Error!", "Failed to delete user!", "error");         
+          }
+    }
+  }
+    async function editUser(userId) {
+      const response = await fetch(`http://103.163.24.134:8080/api/UserInformation/${userId}`, {
+          headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+      });
+      const user = await response.json();
+      // Đổ dữ liệu vào modal cập nhật
+      document.getElementById('updateUserId').value = user[0].id;
+      document.getElementById('updateUserName').value = user[0].userName;
+      document.getElementById('updateEmail').value = user[0].email;
+      document.getElementById('updateFullName').value = user[0].fullName;
+      document.getElementById('updatePhoneNumber').value = user[0].phoneNumber;
+      // Không đổ password vì lý do bảo mật
+      document.getElementById('updatePassword').value = '';
+      document.getElementById('updateConfirmPassword').value = '';
+
+      // Hiển thị modal cập nhật
+      $('#updateUserModal').modal('show');
+    } 
+      document.querySelectorAll('[data-dismiss="modal"]').forEach(button => {
+          button.addEventListener("click", function () {
+              $("#updateUserModal").modal("hide");
+              $("#addUserModal").modal("hide");
+          });
+      });
+      document.addEventListener('DOMContentLoaded', fetchUsers);
+    </script>
+    
+  </body>
+</html>

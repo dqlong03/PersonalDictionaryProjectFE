@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>My Dictionary</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="assets/img/tudien.png"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/auth.js"></script>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+
+    <style>
+      .card-body {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 70%;
+      margin: auto;
+      font-family: Arial, sans-serif;
+      
+      transition: transform 0.3s ease-in-out;
+      }
+
+      .card-body:hover {
+          transform: scale(1.05);
+      }
+      .card{
+        min-height: 90vh;
+      }
+      .card-body h2 {
+          font-size: 24px;
+          margin-bottom: 10px;
+      }
+
+      .card-body p {
+          font-size: 16px;
+          color: #333;
+          text-align: left;
+      }
+
+      .card-body hr {
+          border: none;
+          height: 1px;
+          background-color: #ddd;
+          margin: 10px 0;
+      }
+
+      .language {
+          position: absolute;
+          bottom: 0;
+          right: 50%;
+          font-size: 14px;
+          color: #666;
+      }
+
+      .example {
+          background-color: #f9f9f9;
+          padding: 10px;
+          border-radius: 8px;
+          font-style: italic;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="Home.html" class="logo">
+              <img
+                src="assets/img/logohome.png"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="30"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item ">
+                <a href="Home.html">
+                  <i class="fas fa-home"></i>
+                  <p>Home</p>
+                </a>
+              </li>
+              <li class="nav-item active">  
+                <a href="PublicDictionary.html">  
+                    <i class="fas fa-search"></i>  
+                    <p>Public Dictionary</p>  
+                </a>  
+            </li>
+            
+              <li class="nav-item ">
+                <a href="MyDictionary.html">
+                    <i class="fas fa-bookmark"></i>
+                  <p>My Dictionary</p>
+                </a>
+              </li>
+              
+              <li class="nav-item ">
+                <a href="Profile.html">
+                  <i class="fas fa-user"></i>
+                  <p>Profile</p>
+                </a>
+              </li>
+              <li id="userManagementMenu" class="d-none nav-item">
+                <a href="userManagement.html">
+                    <i class="fa fa-users"></i> User Management
+                </a>
+            </li>
+            <li id="wordManagementMenu" class="d-none nav-item">
+              <a href="WordManagement.html">
+                  <i class="fas fa-clipboard-list"></i>
+                <p>Word Management</p>
+              </a>
+            </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"  data-background-color="dark">
+            <div class="container-fluid">
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div class="avatar-sm">
+                      <img
+                        src="assets/img/avatar.png"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold" id="userNameDisplay"> User Name</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <a class="dropdown-item" href="Profile.html">My Profile</a>
+                        <a class="dropdown-item" id="logoutBtn" onclick="logout()">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container" >
+            <div class="page-inner">
+                <div class="row" style="min-height: 100vh !important;">
+                    <div class="col-md-12" >
+                        <div class="card" >
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="card-title">Public Dictionary</h4>
+                                    <div class="input-group" style="width: 500px; margin-left: 300px;">
+                                        <input type="text" id="searchInput" placeholder="Search ..." class="form-control" />
+                                        <button type="submit" onclick="searchWord()" class="btn btn-search pe-1">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="card-body" style="background-color:#ddd ;">
+                                <div id="wordDetail">
+                                  <div style="display: flex; position: relative; height: 50px;">
+                                    <input type="hidden" id="wordId">
+                                    <h2 id="word"></h2>
+                                    <p style="position: absolute; bottom: -20%; right: 60%;">Language: <span id="language"></span></p>
+                                    <button onclick="addWord()" class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" style="background-color: #343a40 !important; border: none !important;" style="position: absolute; top: 0; right: 0%;">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cloud-plus-fill" viewBox="0 0 16 16">
+                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
+                                      </svg>
+                                    </button>
+                                  </div>
+                                    
+                                    <hr>
+                                    <p><strong>Definition:</strong></p>
+                                    <p id="definition">
+                                      
+                                    </p>
+                                    <hr>
+                                    <p><strong>Example:</strong></p>
+                                    <p id="example">
+                                  
+
+                                    </p>
+                                </div>
+                                <div id="noWord" style="display: none;">
+                                  <div class="error-container" style="width: 50%; margin: 50px auto;text-align: center;">
+                                    <div class="lottie-animation"></div>
+                                    <div class="error-content">
+                                      <h1>Not found</h1>
+                                    </div>
+                                  </div>                               
+                                 </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+
+        <footer class="footer">
+        </footer>
+      </div>
+    </div>
+    
+    <script>
+      const animation = lottie.loadAnimation({
+      container: document.querySelector('.lottie-animation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
+    });
+       let query = document.getElementById("searchInput").value;
+        if(query === ""){
+            query = "Xin chào";
+        }
+          fetch(`http://103.163.24.134:8080/api/Word/searchOne?query=${encodeURIComponent(query)}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+              document.getElementById("wordId").value = data[0].id;
+              document.getElementById("word").textContent = data[0].wordText;
+              document.getElementById("language").textContent = data[0].language;
+              document.getElementById("definition").textContent = data[0].definition;
+              document.getElementById("example").textContent = data[0].example;
+              
+          })
+          .catch(error => console.error("Error:", error));
+
+          function searchWord() {
+            
+            let query = document.getElementById("searchInput").value;
+            if(query === ""){
+            query = "Xin chào";
+            }
+            console.log(query);
+            fetch(`http://103.163.24.134:8080/api/Word/searchOne?query=${encodeURIComponent(query)}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("wordDetail").style.display = "block";
+            document.getElementById("noWord").style.display = "none";
+            console.log(data);
+              document.getElementById("wordId").value = data[0].id;
+              document.getElementById("word").textContent = data[0].wordText;
+              document.getElementById("language").textContent = data[0].language;
+              document.getElementById("definition").textContent = data[0].definition;
+              document.getElementById("example").textContent = data[0].example;
+              
+          })
+          .catch(
+            document.getElementById("wordDetail").style.display = "none",
+            document.getElementById("noWord").style.display = "block"
+        );
+          }
+      function addWord() {
+        const wordId = document.getElementById("wordId").value;
+        console.log(wordId);
+        fetch("http://103.163.24.134:8080/api/Word/addPrivateWord", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify(wordId)
+            })
+            .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                throw new Error(err.message || "Failed to add word");
+                });
+            }
+            return response.json();
+            })
+            .then(data => {
+            Swal.fire("Success!", "Word added successfully!", "success");
+            searchWord();
+            })
+            .catch(error => {
+            console.error("Error adding word:", error);
+            Swal.fire("Error", error.message, "error");
+            });
+
+
+      }
+    
+      </script>
+
+
+        <script>
+            const token = localStorage.getItem("token");
+            fetch("http://103.163.24.134:8080/api/UserInformation", {
+            method: "GET",
+            headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+            if (data.id) {
+                document.getElementById("userNameDisplay").textContent = data.fullName;
+                if (data.roles && data.roles.includes("Admin")) {
+                document.getElementById("userManagementMenu").classList.remove("d-none");
+                document.getElementById("wordManagementMenu").classList.remove("d-none");
+
+                }
+            } else {
+                throw new Error("Invalid user data");
+            }
+            })
+            .catch(error => {
+            console.error(error);
+            });
+        </script>
+        <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+  </body>
+</html>
