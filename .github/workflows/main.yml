@@ -17,13 +17,13 @@ jobs:
     # Xóa container nếu đang chạy
     - name: Stop & Remove container
       run: |
-        docker stop my-nginx-container || true
-        docker rm my-nginx-container || true
+        docker stop fe_personal_dictionary || true
+        docker rm fe_personal_dictionary || true
 
     # Xóa image cũ nếu tồn tại
     - name: Delete old image
       run: |
-        docker rmi exefei || true
+        docker rmi prj || true
 
     # Build image mới
     - name: Build image
