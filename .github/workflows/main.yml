@@ -23,7 +23,7 @@ jobs:
     # Xóa image cũ nếu tồn tại
     - name: Delete old image
       run: |
-        docker rmi prj || true
+        docker rmi exefei || true
 
     # Build image mới
     - name: Build image
@@ -33,4 +33,4 @@ jobs:
     # Chạy container mới
     - name: Run container
       run: |
-        docker run -d -p 8081:80 --name fe_personal_dictionary prj
+        docker run -d -p 8081:80 --name fe_personal_dictionary exefei
