@@ -307,7 +307,10 @@
               document.getElementById("example").textContent = data[0].example;
               
           })
-          .catch(error => console.error("Error:", error));
+          .catch(
+            document.getElementById("wordDetail").style.display = "none",
+            document.getElementById("noWord").style.display = "block"
+          );
 
           function searchWord() {
             
