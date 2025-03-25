@@ -286,31 +286,7 @@
       autoplay: true,
       path: 'https://lottie.host/d987597c-7676-4424-8817-7fca6dc1a33e/BVrFXsaeui.json'
     });
-       let query = document.getElementById("searchInput").value;
-        if(query === ""){
-            query = "Xin chào";
-        }
-          fetch(`http://103.163.24.134:8080/api/Word/searchOne?query=${encodeURIComponent(query)}`, {
-              method: "GET",
-              headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-              document.getElementById("wordId").value = data[0].id;
-              document.getElementById("word").textContent = data[0].wordText;
-              document.getElementById("language").textContent = data[0].language;
-              document.getElementById("definition").textContent = data[0].definition;
-              document.getElementById("example").textContent = data[0].example;
-              
-          })
-          .catch(
-            document.getElementById("wordDetail").style.display = "none",
-            document.getElementById("noWord").style.display = "block"
-          );
+          
 
           function searchWord() {
             
@@ -374,6 +350,7 @@
 
       }
     
+      searchWord();
       </script>
 
 
