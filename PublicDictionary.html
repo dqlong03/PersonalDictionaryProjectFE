@@ -294,7 +294,6 @@
             if(query === ""){
             query = "Xin chào";
             }
-            console.log(query);
             fetch(`http://103.163.24.134:8080/api/Word/searchOne?query=${encodeURIComponent(query)}`, {
               method: "GET",
               headers: {
@@ -306,7 +305,6 @@
           .then(data => {
             document.getElementById("wordDetail").style.display = "block";
             document.getElementById("noWord").style.display = "none";
-            console.log(data);
               document.getElementById("wordId").value = data[0].id;
               document.getElementById("word").textContent = data[0].wordText;
               document.getElementById("language").textContent = data[0].language;
@@ -321,7 +319,6 @@
           }
       function addWord() {
         const wordId = document.getElementById("wordId").value;
-        console.log(wordId);
         fetch("http://103.163.24.134:8080/api/Word/addPrivateWord", {
                 method: "POST",
                 headers: {
