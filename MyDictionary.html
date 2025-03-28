@@ -286,7 +286,10 @@
               </div>
             </div>
           </div>
-          
+          <nav aria-label="Page navigation">
+            <ul id="pagination" class="pagination justify-content-center"></ul>
+          </nav>
+        
 
         <footer class="footer">
         </footer>
@@ -309,32 +312,34 @@
           });
         });
       
-        function loadUserWords() {
-          fetch("http://103.163.24.134:8080/api/Word/user", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-            .then(response => response.json())
-            .then(words => {
-              const wordsList = document.getElementById("wordsList");
-              wordsList.innerHTML = "";
-              words.forEach(word => {
-                wordsList.innerHTML += `
-                  <tr>
-                    <td>${word.wordText}</td>
-                    <td>${word.definition}</td>
-                    <td>
-                    ${(word.isPublic && word.isApproved) ? "Public" : (word.isPublic ? "Pending" : "Private")}
-                    </td>
-                    <td style=" text-align: center;">
-                        <button class="btn btn-link btn-primary btn-lg" onclick="editWord('${word.id}')">
-                        <i class="fa fa-edit"></i>
-                        </button>
-                        <button class="btn btn-link btn-danger" onclick="deleteWord('${word.id}')">
-                        <i class="fa fa-times"></i>
-                        </button>
-                    </td>
-                  </tr>`;
-              });
-            });
+        function loadUserWords(pageNumber = 1, pageSize = 7) {
+          const query = document.getElementById("searchInput").value;
+          const status = document.getElementById("statusFilter").value;
+
+          fetch(`http://103.163.24.134:8080/api/Word/paged?pageNumber=${pageNumber}&pageSize=${pageSize}&query=${encodeURIComponent(query)}&status=${status}`, {
+              headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+              displayWords(data.words);  
+              renderPagination(data.totalPages, pageNumber);  
+          })
+          .catch(error => console.error("Error:", error));
+        } 
+
+        function renderPagination(totalPages, currentPage) {
+          const pagination = document.getElementById("pagination");
+          pagination.innerHTML = "";
+
+          for (let i = 1; i <= totalPages; i++) {
+              pagination.innerHTML += `
+                  <li class="page-item ${i === currentPage ? "active" : ""}">
+                      <a class="page-link" href="#" style="${i === currentPage ? 'background-color: #343a40 !important; color: white; border: none' : ''}" onclick="loadUserWords(${i})">${i}</a>
+                  </li>`;
+          }
         }
+
         function displayWords(words) {
           const wordsList = document.getElementById("wordsList");
           wordsList.innerHTML = "";
@@ -357,23 +362,11 @@
               </tr>`;
           });
         }
-        function searchWords() {
-          const query = document.getElementById("searchInput").value;
-          const status = document.getElementById("statusFilter").value;
 
-          fetch(`http://103.163.24.134:8080/api/Word/search?query=${encodeURIComponent(query)}&status=${status}`, {
-              method: "GET",
-              headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-              displayWords(data);
-          })
-          .catch(error => console.error("Error:", error));
-      }
+        function searchWords() {
+          loadUserWords(1);
+        }
+
         function addNewWord() {
             const newWord = {
                 id:0,

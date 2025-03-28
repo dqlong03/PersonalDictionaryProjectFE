@@ -34,6 +34,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/auth.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -177,6 +178,13 @@
                             <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
                           </svg>
                         </button>
+                        <input type="file" id="excelFileInput" style="display: none;" accept=".xlsx, .xls" onchange="handleExcelFile(event)">
+                        <button  class="btn btn-primary btn-round ms-auto" style="background-color: #343a40 !important; border: none !important; display: block !important;" onclick="document.getElementById('excelFileInput').click()">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-building-fill-add" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
+                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                          </svg>
+                        </button>
                       </div>
                     </div>
                     <div class="card-body">
@@ -283,7 +291,77 @@
         </footer>
       </div>
     </div>
-    
+    <script>
+      function handleExcelFile(event) {
+          const file = event.target.files[0];
+          if (!file) {
+              Swal.fire("Error", "No file selected", "error");
+              return;
+          }
+  
+          const reader = new FileReader();
+          reader.onload = function (e) {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: "array" });
+              const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+              const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+  
+              if (!Array.isArray(jsonData) || jsonData.length === 0) {
+                  Swal.fire("Error", "Invalid or empty Excel file", "error");
+                  return;
+              }
+  
+              const words = jsonData.map((row, index) => {
+                  if (!row.wordText || !row.definition || !row.language || !row.example) {
+                      Swal.fire("Error", `Invalid data at row ${index + 2}`, "error");
+                      throw new Error(`Invalid data at row ${index + 2}`);
+                  }
+  
+                  return {
+                      id: 0,
+                      wordText: row.wordText,
+                      definition: row.definition,
+                      example: row.example,
+                      language: row.language,
+                      isPublic: true,
+                  };
+              });
+              console.log(words);
+              //addWordsFromExcel(words);
+          };
+          reader.onerror = function () {
+              Swal.fire("Error", "Failed to read file", "error");
+          };
+          reader.readAsArrayBuffer(file);
+      }
+  
+      function addWordsFromExcel(words) {
+          fetch("http://103.163.24.134:8080/api/Word/admin/bulk", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+              },
+              body: JSON.stringify(words)
+          })
+          .then(response => {
+              if (!response.ok) {
+                  return response.json().then(err => {
+                      throw new Error(err.message || "Failed to add words");
+                  });
+              }
+              return response.json();
+          })
+          .then(data => {
+              Swal.fire("Success!", "Words added successfully!", "success");
+              loadUserWords();
+          })
+          .catch(error => {
+              console.error("Error adding words from Excel:", error);
+              Swal.fire("Error", error.message, "error");
+          });
+      }
+  </script>
     <script>
         document.querySelectorAll('[data-dismiss="modal"]').forEach(button => {
           button.addEventListener("click", function () {
