@@ -500,6 +500,7 @@
             const example = document.getElementById('updateExample').value.trim();
             const language = document.getElementById('updateLanguage').value.trim();
             const word = { id, wordText, definition, example, language};
+            console.log(word);
           try {
             const response = await fetch('http://103.163.24.134:8080/api/Word/uploadAdmin', {
                 method: 'PUT', 
